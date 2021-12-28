@@ -3,6 +3,9 @@ const Discord = require('discord.js');
 const client = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
 require('dotenv').config();
 
+// Custom Functions - To keep main file clean
+const BankHols = require('./functions/bankHolidays');
+
 // Designating User Prefix
 const prefix = "!";
 
@@ -12,7 +15,7 @@ client.on('ready', () => {
 });
 
 // Adding a Function
-client.on("messageCreate", function(message) {
+client.on("messageCreate", async function(message) {
     if (message.author.bot) return;
     if (!message.content.startsWith(prefix)) return;
 
@@ -26,6 +29,12 @@ client.on("messageCreate", function(message) {
         message.reply(`Pong! This message had a latency of ${timeTaken}ms.`);
     } else if (command === "members") {
         message.reply(`There are ${message.guild.memberCount} members in this discord!`);
+    } else if (command === "bankhols") {
+        const holidays = await BankHols.getHols();
+        message.reply(`The Future Bank Holidays are: ${holidays}`);
+    } else if (command === "bankhol") {
+        const holiday = await BankHols.getHols();
+        message.reply(`The Next Bank Holiday is: ${holiday[0]}`)
     }
 });
 
