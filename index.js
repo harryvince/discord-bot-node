@@ -23,6 +23,9 @@ client.on("messageCreate", async function(message) {
     const commandBody = message.content.slice(prefix.length);
     const args = commandBody.split(' ');
     const command = args.shift().toLowerCase();
+    
+    // Which commands are currently implemented
+    const commands = ("The current commands implemented within the bot are as follows: Ping, Members, Bankhols, Bankhol, Yearprogress, Help | Note that to use these commands prefix your message with a !");
 
     // Commands
     if (command === "ping") {
@@ -39,6 +42,8 @@ client.on("messageCreate", async function(message) {
     } else if (command === "yearprogress") {
         const progress = yearProgress.DISPLAY();
         message.reply(`We are ${progress} through this year!`);
+    } else if (command === "help"){
+        message.reply(commands);
     }
 });
 
