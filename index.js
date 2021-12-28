@@ -6,6 +6,7 @@ require('dotenv').config();
 // Custom Functions - To keep main file clean
 const BankHols = require('./functions/bankHolidays');
 const yearProgress = require('./functions/yearProgress');
+const diff = require('./functions/diffLines');
 
 // Designating User Prefix
 const prefix = "!";
@@ -17,10 +18,12 @@ client.on('ready', () => {
 
 // Adding a Function
 client.on("messageCreate", async function(message) {
-    // If the user sends a message, do nothing
+    // If the bot sends a message, do nothing
     if (message.author.bot) return;
-    // If the user sends a message without the prefix, do nothing
-    if (!message.content.startsWith(prefix)) return;
+    // If the user sends a message without the prefix, do nothing | Unless the word contains diff then reply with diff reply
+    if (!message.content.startsWith(prefix) & ((message.content).toLowerCase()).includes("diff")){
+        message.reply(diff.GenerateDiff());
+    }
 
     // Grabs the message, Removes the prefix, splits by space and then shifts the string to lowercase
     const commandBody = message.content.slice(prefix.length);
