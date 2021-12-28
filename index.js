@@ -25,7 +25,7 @@ client.on("messageCreate", async function(message) {
     const command = args.shift().toLowerCase();
     
     // Which commands are currently implemented
-    const commands = ("The current commands implemented within the bot are as follows: Ping, Members, Bankhols, Bankhol, Yearprogress, Help | Note that to use these commands prefix your message with a !");
+    const commands = ("The current commands implemented within the bot are as follows: Ping, Members, Bankhols, Bankhol, Yearprogress, Sourcecode, Help | Note that to use these commands prefix your message with a !");
 
     // Commands
     if (command === "ping") {
@@ -44,6 +44,8 @@ client.on("messageCreate", async function(message) {
         message.reply(`We are ${progress} through this year!`);
     } else if (command === "help"){
         message.reply(commands);
+    } else if (command === "sourcecode"){
+        message.reply("The source code for this project can be found at: https://github.com/harryvince/discord-bot-node")
     }
 });
 
