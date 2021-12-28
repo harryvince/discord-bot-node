@@ -17,9 +17,12 @@ client.on('ready', () => {
 
 // Adding a Function
 client.on("messageCreate", async function(message) {
+    // If the user sends a message, do nothing
     if (message.author.bot) return;
+    // If the user sends a message without the prefix, do nothing
     if (!message.content.startsWith(prefix)) return;
 
+    // Grabs the message, Removes the prefix, splits by space and then shifts the string to lowercase
     const commandBody = message.content.slice(prefix.length);
     const args = commandBody.split(' ');
     const command = args.shift().toLowerCase();
@@ -28,23 +31,36 @@ client.on("messageCreate", async function(message) {
     const commands = ("The current commands implemented within the bot are as follows: Ping, Members, Bankhols, Bankhol, Yearprogress, Sourcecode, Help | Note that to use these commands prefix your message with a !");
 
     // Commands
+    // Simple Ping Command
     if (command === "ping") {
         const timeTaken = Date.now() - message.createdTimestamp;
         message.reply(`Pong! This message had a latency of ${timeTaken}ms.`);
-    } else if (command === "members") {
+    } 
+    // Members Command - When used the Bot will reply to your message with the member count of the server
+    else if (command === "members") {
         message.reply(`There are ${message.guild.memberCount} members in this discord!`);
-    } else if (command === "bankhols") {
+    } 
+    // Bankhols Command - When used the bot will use the getHols Functions to reply with all the future bank holidays in England and Wales
+    else if (command === "bankhols") {
         const holidays = await BankHols.getHols();
         message.reply(`The Future Bank Holidays are:${holidays}`);
-    } else if (command === "bankhol") {
+    } 
+    // Bankhol Command - When used it will act in the same way the Bankhols command does however only returns the next Bank Holiday
+    else if (command === "bankhol") {
         const holiday = await BankHols.getHols();
         message.reply(`The Next Bank Holiday is:${holiday[0]}`)
-    } else if (command === "yearprogress") {
+    } 
+    // Yearprogress Command - When used the command will use the DISPLAY function to return a status bar and percentage of how far through the year we are
+    else if (command === "yearprogress") {
         const progress = yearProgress.DISPLAY();
         message.reply(`We are ${progress} through this year!`);
-    } else if (command === "help"){
+    } 
+    // Simple Help Command - Returns all the availble commands in the bot | The variable in which this command lives is located on line 28 - commands variable
+    else if (command === "help"){
         message.reply(commands);
-    } else if (command === "sourcecode"){
+    } 
+    // Sourcecode Command - This command returns the github project location for the code
+    else if (command === "sourcecode"){
         message.reply("The source code for this project can be found at: https://github.com/harryvince/discord-bot-node")
     }
 });
