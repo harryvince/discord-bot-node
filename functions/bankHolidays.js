@@ -9,7 +9,7 @@ async function getHols() {
     for await(let number of context.data["england-and-wales"]["events"]){
         var check = Date.parse(number["date"]);
         if(check > date){
-            holidays.push(`${number.title}: ${number.date}`);
+            holidays.push(` ${number.title}: ${number.date}`);
         }
     }
     return holidays;
@@ -17,4 +17,3 @@ async function getHols() {
 
 // Exports
 module.exports = { getHols };
-getHols();

@@ -5,6 +5,7 @@ require('dotenv').config();
 
 // Custom Functions - To keep main file clean
 const BankHols = require('./functions/bankHolidays');
+const yearProgress = require('./functions/yearProgress');
 
 // Designating User Prefix
 const prefix = "!";
@@ -23,7 +24,7 @@ client.on("messageCreate", async function(message) {
     const args = commandBody.split(' ');
     const command = args.shift().toLowerCase();
 
-    // Ping Command
+    // Commands
     if (command === "ping") {
         const timeTaken = Date.now() - message.createdTimestamp;
         message.reply(`Pong! This message had a latency of ${timeTaken}ms.`);
@@ -31,10 +32,13 @@ client.on("messageCreate", async function(message) {
         message.reply(`There are ${message.guild.memberCount} members in this discord!`);
     } else if (command === "bankhols") {
         const holidays = await BankHols.getHols();
-        message.reply(`The Future Bank Holidays are: ${holidays}`);
+        message.reply(`The Future Bank Holidays are:${holidays}`);
     } else if (command === "bankhol") {
         const holiday = await BankHols.getHols();
-        message.reply(`The Next Bank Holiday is: ${holiday[0]}`)
+        message.reply(`The Next Bank Holiday is:${holiday[0]}`)
+    } else if (command === "yearprogress") {
+        const progress = yearProgress.DISPLAY();
+        message.reply(`We are ${progress} through this year!`);
     }
 });
 
