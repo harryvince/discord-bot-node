@@ -7,6 +7,7 @@ require('dotenv').config();
 const BankHols = require('./functions/bankHolidays');
 const yearProgress = require('./functions/yearProgress');
 const diff = require('./functions/diffLines');
+const league = require('./functions/league');
 
 // Designating User Prefix
 const prefix = "!";
@@ -22,12 +23,13 @@ client.on("messageCreate", async function(message) {
     if (message.author.bot) return;
     // If the user sends a message without the prefix, do nothing | Unless the word contains diff then reply with diff reply
     if (!message.content.startsWith(prefix) & ((message.content).toLowerCase()).includes("diff")){
+        // Uses the GenerateDiff function to read a random line from the text file and replys to the message with the random line
         message.reply(diff.GenerateDiff());
     }
 
     // Grabs the message, Removes the prefix, splits by space and then shifts the string to lowercase
     const commandBody = message.content.slice(prefix.length);
-    const args = commandBody.split(' ');
+    const args = commandBody.trim().split(' ');
     const command = args.shift().toLowerCase();
     
     // Which commands are currently implemented
@@ -65,6 +67,18 @@ client.on("messageCreate", async function(message) {
     // Sourcecode Command - This command returns the github project location for the code
     else if (command === "sourcecode"){
         message.reply("The source code for this project can be found at: https://github.com/harryvince/discord-bot-node")
+    }
+    // League Runes
+    else if (command === "runes"){
+        if (!args.length) {
+            return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+        }
+        const options = args.toString().toLowerCase();
+        await league.runes(options);
+        const attachment = new Discord.MessageAttachment("screenshot.jpg");
+
+        message.channel.send(`Runes for ${args}:`)
+        message.channel.send({files: [attachment] });
     }
 });
 
