@@ -68,19 +68,25 @@ client.on("messageCreate", async function(message) {
     else if (command === "sourcecode"){
         message.reply("The source code for this project can be found at: https://github.com/harryvince/discord-bot-node")
     }
-    // League Runes
-    else if (command === "runes"){
+    // League champ
+    else if (command === "champ"){
         if (!args.length) {
             return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
-        } else if (args.length > 1) {
+        } else if (args.length > 2) {
             message.channel.send('You sent too many options! Please try again...');
+        } else if (args.length < 1) {
+            message.channel.send(`You didn't send enough arguments! Make sure to include all required fields!`);
         }
-        const options = args.toString().toLowerCase();
-        const errorCheck = await league.runes(options);
-        const attachment = new Discord.MessageAttachment("runes.jpg");
+        const errorCheck = await league.gatherChampDetails(args[0].toString().toLowerCase(), args[1].toString().toLowerCase());
+        console.log(args[0].toString().toLowerCase(), args[1].toString().toLowerCase());
         if ( errorCheck === true){
-            message.channel.send(`Runes for ${args}:`)
-            message.channel.send({files: [attachment] });
+            const runes = new Discord.MessageAttachment("runes.jpg");
+            message.channel.send(`Build for ${args[0]} on ${args[1]}:`)
+            await message.channel.send({files: [runes] });
+            const skills = new Discord.MessageAttachment("skills.jpg");
+            await message.channel.send({files: [skills] });
+            const items = new Discord.MessageAttachment("items.jpg");
+            await message.channel.send({files: [items] });
         } else {
             message.channel.send(`Sorry, i'm having problems processing that request!`);
         }
