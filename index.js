@@ -72,6 +72,8 @@ client.on("messageCreate", async function(message) {
     else if (command === "runes"){
         if (!args.length) {
             return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+        } else if (args.length > 1) {
+            message.channel.send('You sent too many options! Please try again...');
         }
         const options = args.toString().toLowerCase();
         await league.runes(options);
