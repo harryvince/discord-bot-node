@@ -1,7 +1,7 @@
 // Importing Modules
 const puppeteer = require('puppeteer');
 
-// Code
+// Runes Function
 async function runes (champ) {
     try {
         const url = `https://u.gg/lol/champions/${champ}/build`;
@@ -14,10 +14,12 @@ async function runes (champ) {
         await page.keyboard.press('Enter'); // Enter Key
         await page.waitForSelector('#content > div > div.champion-profile-content-container.content-side-padding > div > div > div.champion-profile-page > div > div.content-section.content-section_no-padding.grid-1 > div.content-section_content.recommended-build_runes');
         const element = await page.$('#content > div > div.champion-profile-content-container.content-side-padding > div > div > div.champion-profile-page > div > div.content-section.content-section_no-padding.grid-1 > div.content-section_content.recommended-build_runes')
-        await element.screenshot({path: 'screenshot.jpg'});
+        await element.screenshot({path: 'runes.jpg'});
         browser.close();
+        return true;
     } catch (err) {
-        console.log(`Unable to complete the following operation, please find the following error => `, err);
+        console.log(`Unable to complete the following operation, the request timed out`);
+        return false;
     }
 }
 

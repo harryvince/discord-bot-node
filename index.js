@@ -76,11 +76,14 @@ client.on("messageCreate", async function(message) {
             message.channel.send('You sent too many options! Please try again...');
         }
         const options = args.toString().toLowerCase();
-        await league.runes(options);
-        const attachment = new Discord.MessageAttachment("screenshot.jpg");
-
-        message.channel.send(`Runes for ${args}:`)
-        message.channel.send({files: [attachment] });
+        const errorCheck = await league.runes(options);
+        const attachment = new Discord.MessageAttachment("runes.jpg");
+        if ( errorCheck === true){
+            message.channel.send(`Runes for ${args}:`)
+            message.channel.send({files: [attachment] });
+        } else {
+            message.channel.send(`Sorry, i'm having problems processing that request!`);
+        }
     }
 });
 
